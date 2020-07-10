@@ -79,7 +79,18 @@ class CityreaderTests(unittest.TestCase):
   def test_cityreader_correctness(self):
     self.assertEqual(len(self.cities), 60)
     for i in range(len(self.cities)):
+      #NOTE These print statements all look the same, but the test fails!
+      print(self.cities[i].name)
+      print(self.expected[i].name)
+
+      print(self.cities[i].lat)
+      print(self.expected[i].lat)
+
+      print(self.cities[i].lon)
+      print(self.expected[i].lon)
+
       self.assertTrue(check_city(self.cities[i], self.expected[i]))
+      
 
 
 if __name__ == '__main__':

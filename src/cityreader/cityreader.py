@@ -1,4 +1,5 @@
 import csv
+from os import system, name
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
 
@@ -26,9 +27,6 @@ class City:
 cities = []
 
 def cityreader(cities=[]):
-  # TODO Implement the functionality to read from the 'cities.csv' file
-  # For each city record, create a new City instance and add it to the 
-  # `cities` list
   with open('cities.csv', newline='') as csvfile:
     
     #skipping the header
@@ -36,9 +34,8 @@ def cityreader(cities=[]):
     iterCities = iter(cities_reader)
     next(iterCities)
 
-    for row in iterCities:
-      # NOTE test is failing, (I thought because of additional county text, but it turns out the test is formated without a space after latitude and I'm not sure how I could get around this since we're using class instances and I don't control the spacing in the output...)
-      cities.append(City(f"{row[0]}, {row[1]} (in {row[2]} county)", row[3], row[4]))
+    for row in iterCities:      
+      cities.append( City(f"{row[0]}", row[3],row[4]) )
       
     return cities
 
@@ -83,8 +80,55 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
   within = []
 
+  
+
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
   return within
+if name == "nt":
+  system("cls")
+else:
+  system("clear")
+  
+lat = input("Enter lat1, lat2: ")
+print(lat)
+lat_list = lat.split(", ")
+print(lat_list)
+
+try:
+  lat1 = lat_list[0]
+  lat2 = lat_list[1]
+except IndexError:
+  print("Enter 2 latitude coordinates separated by a comma. This is the latitude range to search in")
+
+
+lon = input("Enter longitude 1, longitude 2: ")
+lon_list = lon.split(", ")
+
+try:
+  lon1 = lon_list[0]
+  lon2 = lon_list[1]
+except IndexError:
+  print("Enter 2 longitude coordinates separated by a comma. This is the longitude range to search in")
+
+try:
+  lat_range = range(int(lat1), int(lat2)+1)
+except ValueError:
+  print("Error with lat value")
+
+try:
+  lon_range= range(int(lon1), int(lon2)+1)
+except ValueError:
+  print("Error with lon value")
+
+for c in cities:
+  print(c.lon)
+  print(lon_range)
+  if c.lon in lon_range and c.lat in lat_range:    
+      print(c.name)
+  else:
+    print("no")
+
+  
