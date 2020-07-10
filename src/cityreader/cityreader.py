@@ -1,6 +1,15 @@
+import csv
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
 
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+
+  def __str__(self):
+    return f"{self.name}, {self.lat}, {self.lon}"
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -20,7 +29,17 @@ def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
+  with open('cities.csv', newline='') as csvfile:
     
+    #skipping the header
+    cities_reader = csv.reader(csvfile)
+    iterCities = iter(cities_reader)
+    next(iterCities)
+
+    for row in iterCities:
+      # NOTE test is failing, (I thought because of additional county text, but it turns out the test is formated without a space after latitude and I'm not sure how I could get around this since we're using class instances and I don't control the spacing in the output...)
+      cities.append(City(f"{row[0]}, {row[1]} (in {row[2]} county)", row[3], row[4]))
+      
     return cities
 
 cityreader(cities)
